@@ -8,6 +8,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
+    private static final String TEST_DIR = "/sdcard/reinhard/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +33,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void testAmrToMp3() {
         Log.d(TAG, "testAmrToMp3");
-        String amrPath = "/sdcard/reinhard/amr2mp3/in.amr";
-        String pcmPath = "/sdcard/reinhard/amr2mp3/out.pcm";
-        String mp3Path = "/sdcard/reinhard/amr2mp3/out.mp3";
+        String amrPath = TEST_DIR + "amr2mp3/in.amr";
+        String pcmPath = TEST_DIR + "amr2mp3/out.pcm";
+        String mp3Path = TEST_DIR + "amr2mp3/out.mp3";
         AudioCodec.amrToMp3(amrPath, pcmPath, mp3Path);
     }
 
     private void testMp3ToAmr() {
         Log.d(TAG, "testMp3ToAmr");
-        String amrPath = "/sdcard/reinhard/mp32amr/in.mp3";
-        String pcmPath = "/sdcard/reinhard/mp32amr/out.pcm";
-        String mp3Path = "/sdcard/reinhard/mp32amr/out.amr";
+        String amrPath = TEST_DIR + "mp32amr/in.mp3";
+        String pcmPath = TEST_DIR + "mp32amr/out.pcm";
+        String mp3Path = TEST_DIR + "mp32amr/out.amr";
         AudioCodec.mp3ToAmr(amrPath, pcmPath, mp3Path);
     }
 }

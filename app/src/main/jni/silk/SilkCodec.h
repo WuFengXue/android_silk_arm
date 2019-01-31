@@ -5,10 +5,11 @@
  * @date 2019/1/31
  */
 
-#ifndef ENCODER_H
-#define ENCODER_H
+#ifndef SILK_CODEC_H
+#define SILK_CODEC_H
 
-int silk_decoder_main( int argc, char* argv[] );
-int silk_encoder_main( int argc, char* argv[] );
+int silk_decoder_main(int argc, char *argv[]);
+
+int silk_encoder_main(int argc, char *argv[]);
 
 #endif

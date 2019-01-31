@@ -99,7 +99,7 @@ unsigned long GetHighResolutionTime() /* O: time in usec*/
 /* Seed for the random number generator, which is used for simulating packet loss */
 static SKP_int32 rand_seed = 1;
 
-static void print_usage(char* argv[]) {
+static void print_decoder_usage(char* argv[]) {
     printf( "\nusage: %s in.bit out.pcm [settings]\n", argv[ 0 ] );
     printf( "\nin.bit       : Bitstream input to decoder" );
     printf( "\nout.pcm      : Speech output from decoder" );
@@ -134,7 +134,7 @@ int main( int argc, char* argv[] )
     SKP_SILK_SDK_DecControlStruct DecControl;
 
     if( argc < 3 ) {
-        print_usage( argv );
+        print_decoder_usage( argv );
         exit( 0 );
     } 
 
@@ -160,7 +160,7 @@ int main( int argc, char* argv[] )
             args++;
         } else {
             printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
-            print_usage( argv );
+            print_decoder_usage( argv );
             exit( 0 );
         }
     }

@@ -93,7 +93,7 @@ unsigned long GetHighResolutionTime() /* O: time in usec*/
 }
 #endif // _WIN32
 
-static void print_usage( char* argv[] ) {
+static void print_encoder_usage( char* argv[] ) {
     printf( "\nusage: %s in.pcm out.bit [settings]\n", argv[ 0 ] );
     printf( "\nin.pcm               : Speech input to encoder" );
     printf( "\nout.bit              : Bitstream output from encoder" );
@@ -145,7 +145,7 @@ int main( int argc, char* argv[] )
     SKP_SILK_SDK_EncControlStruct encStatus;  // Struct for status of encoder
 
     if( argc < 3 ) {
-        print_usage( argv );
+        print_encoder_usage( argv );
         exit( 0 );
     } 
     
@@ -185,7 +185,7 @@ int main( int argc, char* argv[] )
             args++;
         } else {
             printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
-            print_usage( argv );
+            print_encoder_usage( argv );
             exit( 0 );
         }
     }

@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SKP_Silk_SDK_API.h"
 
 /* Define codec specific settings */
-#define MAX_BYTES_PER_FRAME     250 // Equals peak bitrate of 100 kbps 
+#define MAX_BYTES_PER_FRAME_ENCODER     250 // Equals peak bitrate of 100 kbps 
 #define MAX_INPUT_FRAMES        5
 #define FRAME_LENGTH_MS         20
 #define MAX_API_FS_KHZ          48
@@ -118,7 +118,7 @@ int main( int argc, char* argv[] )
     SKP_int32 k, args, totPackets, totActPackets, ret;
     SKP_int16 nBytes;
     double    sumBytes, sumActBytes, avg_rate, act_rate, nrg;
-    SKP_uint8 payload[ MAX_BYTES_PER_FRAME * MAX_INPUT_FRAMES ];
+    SKP_uint8 payload[ MAX_BYTES_PER_FRAME_ENCODER * MAX_INPUT_FRAMES ];
     SKP_int16 in[ FRAME_LENGTH_MS * MAX_API_FS_KHZ * MAX_INPUT_FRAMES ];
     char      speechInFileName[ 150 ], bitOutFileName[ 150 ];
     FILE      *bitOutFile, *speechInFile;
@@ -281,7 +281,7 @@ int main( int argc, char* argv[] )
         }
 
         /* max payload size */
-        nBytes = MAX_BYTES_PER_FRAME * MAX_INPUT_FRAMES;
+        nBytes = MAX_BYTES_PER_FRAME_ENCODER * MAX_INPUT_FRAMES;
 
         starttime = GetHighResolutionTime();
 

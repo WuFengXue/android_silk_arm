@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SKP_Silk_SigProc_FIX.h"
 
 /* Define codec specific settings should be moved to h file */
-#define MAX_BYTES_PER_FRAME     1024
+#define MAX_BYTES_PER_FRAME_DECODER     1024
 #define MAX_INPUT_FRAMES        5
 #define MAX_FRAME_LENGTH        480
 #define FRAME_LENGTH_MS         20
@@ -118,9 +118,9 @@ int main( int argc, char* argv[] )
     SKP_int32 args, totPackets, i, k;
     SKP_int16 ret, len, tot_len;
     SKP_int16 nBytes;
-    SKP_uint8 payload[    MAX_BYTES_PER_FRAME * MAX_INPUT_FRAMES * ( MAX_LBRR_DELAY + 1 ) ];
+    SKP_uint8 payload[    MAX_BYTES_PER_FRAME_DECODER * MAX_INPUT_FRAMES * ( MAX_LBRR_DELAY + 1 ) ];
     SKP_uint8 *payloadEnd = NULL, *payloadToDec = NULL;
-    SKP_uint8 FECpayload[ MAX_BYTES_PER_FRAME * MAX_INPUT_FRAMES ], *payloadPtr;
+    SKP_uint8 FECpayload[ MAX_BYTES_PER_FRAME_DECODER * MAX_INPUT_FRAMES ], *payloadPtr;
     SKP_int16 nBytesFEC;
     SKP_int16 nBytesPerPacket[ MAX_LBRR_DELAY + 1 ], totBytes;
     SKP_int16 out[ ( ( FRAME_LENGTH_MS * MAX_API_FS_KHZ ) << 1 ) * MAX_INPUT_FRAMES ], *outPtr;

@@ -4,6 +4,7 @@
 extern "C" {
 #endif
 
+#include "lame/LameCodec.h"
 #include "silk/SilkCodec.h"
 
 /*
@@ -19,6 +20,11 @@ JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_amrToMp3
     int argc = 3;
     const char *argv[] = {"./Decoder", amr, pcm};
     silk_decoder_main(argc, (char **) argv);
+
+    int argc2 = 14;
+    const char *argv2[] = {"./lame", "-q", "5", "-b", "128", "-m", "m", "-r",
+                           "-s", "24000", "--resample", "24000", pcm, mp3};
+    lame_codec_main(argc2, (char **) argv2);
 }
 
 /*
@@ -34,6 +40,10 @@ JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_mp3ToAmr
     int argc = 5;
     const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000"};
     silk_encoder_main(argc, (char **) argv);
+
+    int argc2 = 5;
+    const char *argv2[] = {"./lame", "--decode", "-t", mp3, pcm};
+    lame_codec_main(argc2, (char **) argv2);
 }
 
 #ifdef __cplusplus

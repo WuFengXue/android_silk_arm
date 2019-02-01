@@ -30,7 +30,8 @@ add_executable(lame ${LAME_FRONTEND_SRC} ${LAME_SRC} ${LAME_MPGLIB_SRC})
 
 # audio codec
 aux_source_directory(src/main/jni/silk SILK_CODEC_SRC)
+aux_source_directory(src/main/jni/lame LAME_CODEC_SRC)
 add_library(codec SHARED src/main/jni/AudioCodec.c ${SILK_SRC} ${SILK_CODEC_SRC}
-        ${LAME_SRC} ${LAME_MPGLIB_SRC})
+        ${LAME_FRONTEND_SRC} ${LAME_SRC} ${LAME_MPGLIB_SRC} ${LAME_CODEC_SRC})
 find_library(android-log log)
 target_link_libraries(codec ${android-log})

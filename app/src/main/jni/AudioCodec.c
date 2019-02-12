@@ -41,8 +41,8 @@ JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_encode
     const char *argv2[] = {"./lame", "--decode", "-t", mp3, pcm};
     lame_codec_main(argc, (char **) argv2);
 
-    int argc2 = 5;
-    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000"};
+    int argc2 = 6;
+    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
     silk_encoder_main(argc2, (char **) argv);
 }
 

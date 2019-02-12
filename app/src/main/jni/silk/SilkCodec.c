@@ -470,6 +470,7 @@ static void print_encoder_usage( char* argv[] ) {
     printf( "\n-complexity <comp>   : Set complexity, 0: low, 1: medium, 2: high; default: 2" );
     printf( "\n-DTX <flag>          : Enable DTX (0/1); default: 0" );
     printf( "\n-quiet               : Print only some basic values" );
+    printf( "\n-stx_header               : Add ASCII STX code to header (for wechat)" );
     printf( "\n");
 }
 
@@ -503,7 +504,7 @@ int silk_encoder_main( int argc, char* argv[] )
 #else
     SKP_int32 complexity_mode = 2;
 #endif
-    SKP_int32 DTX_enabled = 0, INBandFEC_enabled = 0, quiet = 0;
+    SKP_int32 DTX_enabled = 0, INBandFEC_enabled = 0, quiet = 0, stx_header = 0;
     SKP_SILK_SDK_EncControlStruct encControl; // Struct for input to encoder
     SKP_SILK_SDK_EncControlStruct encStatus;  // Struct for status of encoder
 
@@ -546,6 +547,9 @@ int silk_encoder_main( int argc, char* argv[] )
         } else if( SKP_STR_CASEINSENSITIVE_COMPARE( argv[ args ], "-quiet" ) == 0 ) {
             quiet = 1;
             args++;
+        } else if( SKP_STR_CASEINSENSITIVE_COMPARE( argv[ args ], "-stx_header" ) == 0 ) {
+            stx_header = 1;
+            args++;
         } else {
             printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_encoder_usage( argv );
@@ -574,6 +578,7 @@ int silk_encoder_main( int argc, char* argv[] )
         printf( "DTX used:                       %d\n",     DTX_enabled );
         printf( "Complexity:                     %d\n",     complexity_mode );
         printf( "Target bitrate:                 %d bps\n", targetRate_bps );
+        printf( "STX header used:                %d\n",     stx_header );
     }
 
     /* Open files */
@@ -590,6 +595,10 @@ int silk_encoder_main( int argc, char* argv[] )
 
     /* Add Silk header to stream */
     {
+        /* Add ASCII STX code to header (for wechat) */
+        if (stx_header) {
+            fputc(2, bitOutFile);
+        }
         static const char Silk_header[] = "#!SILK_V3";
         fwrite( Silk_header, sizeof( char ), strlen( Silk_header ), bitOutFile );
     }

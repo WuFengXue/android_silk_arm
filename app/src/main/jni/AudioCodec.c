@@ -38,12 +38,12 @@ JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_mp3ToAmr
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
     int argc = 5;
-    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000"};
-    silk_encoder_main(argc, (char **) argv);
+    const char *argv2[] = {"./lame", "--decode", "-t", mp3, pcm};
+    lame_codec_main(argc, (char **) argv2);
 
     int argc2 = 5;
-    const char *argv2[] = {"./lame", "--decode", "-t", mp3, pcm};
-    lame_codec_main(argc2, (char **) argv2);
+    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000"};
+    silk_encoder_main(argc2, (char **) argv);
 }
 
 #ifdef __cplusplus

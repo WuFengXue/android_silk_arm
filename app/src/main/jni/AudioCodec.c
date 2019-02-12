@@ -17,8 +17,8 @@ JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_decode
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
     const char *mp3 = (*env)->GetStringUTFChars(env, mp3Path, JNI_FALSE);
-    int argc = 3;
-    const char *argv[] = {"./Decoder", amr, pcm};
+    int argc = 4;
+    const char *argv[] = {"./Decoder", amr, pcm, "-stx_header"};
     silk_decoder_main(argc, (char **) argv);
 
     int argc2 = 14;

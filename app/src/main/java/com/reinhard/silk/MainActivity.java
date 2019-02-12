@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String amrPath = TEST_DIR + "amr2mp3/in.amr";
         String pcmPath = TEST_DIR + "amr2mp3/out.pcm";
         String mp3Path = TEST_DIR + "amr2mp3/out.mp3";
-        AudioCodec.amrToMp3(amrPath, pcmPath, mp3Path);
+        AudioCodec.decode(amrPath, pcmPath, mp3Path);
     }
 
     private void testMp3ToAmr() {
@@ -44,6 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String amrPath = TEST_DIR + "mp32amr/in.mp3";
         String pcmPath = TEST_DIR + "mp32amr/out.pcm";
         String mp3Path = TEST_DIR + "mp32amr/out.amr";
-        AudioCodec.mp3ToAmr(amrPath, pcmPath, mp3Path);
+        AudioCodec.encode(amrPath, pcmPath, mp3Path);
     }
 }

@@ -9,10 +9,10 @@ extern "C" {
 
 /*
  * Class:     com_reinhard_silk_AudioCodec
- * Method:    amrToMp3
+ * Method:    decode
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_amrToMp3
+JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_decode
         (JNIEnv *env, jclass clazz, jstring amrPath, jstring pcmPath, jstring mp3Path) {
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
@@ -29,10 +29,10 @@ JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_amrToMp3
 
 /*
  * Class:     com_reinhard_silk_AudioCodec
- * Method:    mp3ToAmr
+ * Method:    encode
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_mp3ToAmr
+JNIEXPORT void JNICALL Java_com_reinhard_silk_AudioCodec_encode
         (JNIEnv *env, jclass clazz, jstring mp3Path, jstring pcmPath, jstring amrPath) {
     const char *mp3 = (*env)->GetStringUTFChars(env, mp3Path, JNI_FALSE);
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);

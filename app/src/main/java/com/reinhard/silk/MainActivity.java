@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_amr_to_mp3:
                 testAmrToMp3();
                 break;
+            case R.id.btn_pcm_to_amr:
+                testPcmToAmr();
+                break;
             case R.id.btn_mp3_to_amr:
                 testMp3ToAmr();
                 break;
@@ -36,7 +40,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String amrPath = TEST_DIR + "amr2mp3/in.amr";
         String pcmPath = TEST_DIR + "amr2mp3/out.pcm";
         String mp3Path = TEST_DIR + "amr2mp3/out.mp3";
-        AudioCodec.decode(amrPath, pcmPath, mp3Path);
+        if (AudioCodec.decode(amrPath, pcmPath, mp3Path) == 0) {
+            Toast.makeText(this, "testAmrToMp3 success", Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    private void testPcmToAmr() {
+        Log.d(TAG, "testPcmToAmr");
+        String pcmPath = TEST_DIR + "pcm2amr/in.pcm";
+        String mp3Path = TEST_DIR + "pcm2amr/out.amr";
+        if (AudioCodec.encode(pcmPath, mp3Path) == 0) {
+            Toast.makeText(this, "testPcmToAmr success", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private void testMp3ToAmr() {
@@ -44,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String amrPath = TEST_DIR + "mp32amr/in.mp3";
         String pcmPath = TEST_DIR + "mp32amr/out.pcm";
         String mp3Path = TEST_DIR + "mp32amr/out.amr";
-        AudioCodec.encode(amrPath, pcmPath, mp3Path);
+        if (AudioCodec.encode2(amrPath, pcmPath, mp3Path) == 0) {
+            Toast.makeText(this, "testMp3ToAmr success", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 }

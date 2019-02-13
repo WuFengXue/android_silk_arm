@@ -32,9 +32,23 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_decode
 /*
  * Class:     com_reinhard_silk_AudioCodec
  * Method:    encode
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_encode
+        (JNIEnv *env, jclass clazz, jstring pcmPath, jstring amrPath) {
+    const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
+    const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
+    int argc = 6;
+    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
+    return silk_encoder_main(argc, (char **) argv);
+}
+
+/*
+ * Class:     com_reinhard_silk_AudioCodec
+ * Method:    encode2
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_encode2
         (JNIEnv *env, jclass clazz, jstring mp3Path, jstring pcmPath, jstring amrPath) {
     const char *mp3 = (*env)->GetStringUTFChars(env, mp3Path, JNI_FALSE);
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);

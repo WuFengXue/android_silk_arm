@@ -13,5 +13,7 @@ public class AudioCodec {
 
     public static native int decode(String amrPath, String pcmPath, String mp3Path);
 
-    public static native int encode(String mp3Path, String pcmPath, String amrPath);
+    public static native int encode(String pcmPath, String amrPath);
+
+    public static native int encode2(String mp3Path, String pcmPath, String amrPath);
 }

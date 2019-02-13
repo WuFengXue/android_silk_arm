@@ -40,11 +40,11 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_encode
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
     int argc = 5;
-    const char *argv2[] = {"./lame", "--decode", "-t", mp3, pcm};
-    if (lame_codec_main(argc, (char **) argv2) == JNI_OK) {
+    const char *argv[] = {"./lame", "--decode", "-t", mp3, pcm};
+    if (lame_codec_main(argc, (char **) argv) == JNI_OK) {
         int argc2 = 6;
-        const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
-        return silk_encoder_main(argc2, (char **) argv);
+        const char *argv2[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
+        return silk_encoder_main(argc2, (char **) argv2);
     } else {
         return JNI_ERR;
     }

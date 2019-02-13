@@ -11,7 +11,7 @@ public class AudioCodec {
         System.loadLibrary("codec");
     }
 
-    public static native void decode(String amrPath, String pcmPath, String mp3Path);
+    public static native int decode(String amrPath, String pcmPath, String mp3Path);
 
-    public static native void encode(String mp3Path, String pcmPath, String amrPath);
+    public static native int encode(String mp3Path, String pcmPath, String amrPath);
 }

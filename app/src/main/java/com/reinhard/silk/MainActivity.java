@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void testAmrToMp3() {
         Log.d(TAG, "testAmrToMp3");
         String amrPath = TEST_DIR + "amr2mp3/in.amr";
-        String pcmPath = TEST_DIR + "amr2mp3/out.pcm";
         String mp3Path = TEST_DIR + "amr2mp3/out.mp3";
-        if (AudioCodec.decode(amrPath, pcmPath, mp3Path) == 0) {
+        String pcmPath = TEST_DIR + "amr2mp3/out.pcm";
+        if (AudioCodec.decode(amrPath, mp3Path, pcmPath) == 0) {
             Toast.makeText(this, "testAmrToMp3 success", Toast.LENGTH_SHORT)
                     .show();
         }

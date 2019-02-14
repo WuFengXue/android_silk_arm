@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_decode
-        (JNIEnv *env, jclass clazz, jstring amrPath, jstring pcmPath, jstring mp3Path) {
+        (JNIEnv *env, jclass clazz, jstring amrPath, jstring mp3Path, jstring pcmPath) {
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
     const char *mp3 = (*env)->GetStringUTFChars(env, mp3Path, JNI_FALSE);

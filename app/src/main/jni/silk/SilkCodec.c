@@ -120,7 +120,7 @@ int silk_decoder_main( int argc, char* argv[] )
 
     if( argc < 3 ) {
         print_decoder_usage( argv );
-        return JNI_EINVAL;
+        return JNI_ERR;
     }
 
     /* default settings */
@@ -149,7 +149,7 @@ int silk_decoder_main( int argc, char* argv[] )
         } else {
             LOGE( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_decoder_usage( argv );
-            return JNI_EINVAL;
+            return JNI_ERR;
         }
     }
 
@@ -522,7 +522,7 @@ int silk_encoder_main( int argc, char* argv[] )
 
     if( argc < 3 ) {
         print_encoder_usage( argv );
-        return JNI_EINVAL;
+        return JNI_ERR;
     }
 
     /* get arguments */
@@ -565,7 +565,7 @@ int silk_encoder_main( int argc, char* argv[] )
         } else {
             LOGE( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_encoder_usage( argv );
-            return JNI_EINVAL;
+            return JNI_ERR;
         }
     }
 

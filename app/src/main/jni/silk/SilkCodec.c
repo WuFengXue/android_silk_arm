@@ -14,6 +14,7 @@
 #include <string.h>
 #include "SKP_Silk_SDK_API.h"
 #include "SKP_Silk_SigProc_FIX.h"
+#include "../AudioCodec.h"
 
 /* Define codec specific settings should be moved to h file */
 #define MAX_BYTES_PER_FRAME_DECODER     1024
@@ -83,15 +84,15 @@ static SKP_int32 rand_seed = 1;
 /*****************************/
 
 static void print_decoder_usage(char* argv[]) {
-    printf( "\nusage: %s in.bit out.pcm [settings]\n", argv[ 0 ] );
-    printf( "\nin.bit       : Bitstream input to decoder" );
-    printf( "\nout.pcm      : Speech output from decoder" );
-    printf( "\n   settings:" );
-    printf( "\n-Fs_API <Hz> : Sampling rate of output signal in Hz; default: 24000" );
-    printf( "\n-loss <perc> : Simulated packet loss percentage (0-100); default: 0" );
-    printf( "\n-quiet       : Print out just some basic values" );
-    printf( "\n-stx_header  : Skip ASCII STX code of header (for wechat)" );
-    printf( "\n" );
+    LOGD( "\nusage: %s in.bit out.pcm [settings]\n", argv[ 0 ] );
+    LOGD( "\nin.bit       : Bitstream input to decoder" );
+    LOGD( "\nout.pcm      : Speech output from decoder" );
+    LOGD( "\n   settings:" );
+    LOGD( "\n-Fs_API <Hz> : Sampling rate of output signal in Hz; default: 24000" );
+    LOGD( "\n-loss <perc> : Simulated packet loss percentage (0-100); default: 0" );
+    LOGD( "\n-quiet       : Print out just some basic values" );
+    LOGD( "\n-stx_header  : Skip ASCII STX code of header (for wechat)" );
+    LOGD( "\n" );
 }
 
 int silk_decoder_main( int argc, char* argv[] )
@@ -146,24 +147,24 @@ int silk_decoder_main( int argc, char* argv[] )
             stx_header = 1;
             args++;
         } else {
-            printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
+            LOGE( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_decoder_usage( argv );
             return JNI_EINVAL;
         }
     }
 
     if( !quiet ) {
-        printf("********** Silk Decoder (Fixed Point) v %s ********************\n", SKP_Silk_SDK_get_version());
-        printf("********** Compiled for %d bit cpu *******************************\n", (int)sizeof(void*) * 8 );
-        printf( "Input:                       %s\n", bitInFileName );
-        printf( "Output:                      %s\n", speechOutFileName );
-        printf( "Skip STX header:             %d\n", stx_header );
+        LOGD("********** Silk Decoder (Fixed Point) v %s ********************\n", SKP_Silk_SDK_get_version());
+        LOGD("********** Compiled for %d bit cpu *******************************\n", (int)sizeof(void*) * 8 );
+        LOGD( "Input:                       %s\n", bitInFileName );
+        LOGD( "Output:                      %s\n", speechOutFileName );
+        LOGD( "Skip STX header:             %d\n", stx_header );
     }
 
     /* Open files */
     bitInFile = fopen( bitInFileName, "rb" );
     if( bitInFile == NULL ) {
-        printf( "Error: could not open input file %s\n", bitInFileName );
+        LOGE( "Error: could not open input file %s\n", bitInFileName );
         return JNI_ERR;
     }
 
@@ -178,14 +179,14 @@ int silk_decoder_main( int argc, char* argv[] )
         header_buf[ strlen( "#!SILK_V3" ) ] = '\0'; /* Terminate with a null character */
         if( strcmp( header_buf, "#!SILK_V3" ) != 0 ) {
             /* Non-equal strings */
-            printf( "Error: Wrong Header %s\n", header_buf );
+            LOGE( "Error: Wrong Header %s\n", header_buf );
             return JNI_ERR;
         }
     }
 
     speechOutFile = fopen( speechOutFileName, "wb" );
     if( speechOutFile == NULL ) {
-        printf( "Error: could not open output file %s\n", speechOutFileName );
+        LOGE( "Error: could not open output file %s\n", speechOutFileName );
         return JNI_ERR;
     }
 
@@ -202,14 +203,14 @@ int silk_decoder_main( int argc, char* argv[] )
     /* Create decoder */
     ret = SKP_Silk_SDK_Get_Decoder_Size( &decSizeBytes );
     if( ret ) {
-        printf( "\nSKP_Silk_SDK_Get_Decoder_Size returned %d", ret );
+        LOGD( "\nSKP_Silk_SDK_Get_Decoder_Size returned %d", ret );
     }
     psDec = malloc( decSizeBytes );
 
     /* Reset decoder */
     ret = SKP_Silk_SDK_InitDecoder( psDec );
     if( ret ) {
-        printf( "\nSKP_Silk_InitDecoder returned %d", ret );
+        LOGD( "\nSKP_Silk_InitDecoder returned %d", ret );
     }
 
     totPackets = 0;
@@ -297,7 +298,7 @@ int silk_decoder_main( int argc, char* argv[] )
                 /* Decode 20 ms */
                 ret = SKP_Silk_SDK_Decode( psDec, &DecControl, 0, payloadToDec, nBytes, outPtr, &len );
                 if( ret ) {
-                    printf( "\nSKP_Silk_SDK_Decode returned %d", ret );
+                    LOGD( "\nSKP_Silk_SDK_Decode returned %d", ret );
                 }
 
                 frames++;
@@ -317,7 +318,7 @@ int silk_decoder_main( int argc, char* argv[] )
                 /* Generate 20 ms */
                 ret = SKP_Silk_SDK_Decode( psDec, &DecControl, 1, payloadToDec, nBytes, outPtr, &len );
                 if( ret ) {
-                    printf( "\nSKP_Silk_Decode returned %d", ret );
+                    LOGD( "\nSKP_Silk_Decode returned %d", ret );
                 }
                 outPtr  += len;
                 tot_len += len;
@@ -388,7 +389,7 @@ int silk_decoder_main( int argc, char* argv[] )
                 /* Decode 20 ms */
                 ret = SKP_Silk_SDK_Decode( psDec, &DecControl, 0, payloadToDec, nBytes, outPtr, &len );
                 if( ret ) {
-                    printf( "\nSKP_Silk_SDK_Decode returned %d", ret );
+                    LOGD( "\nSKP_Silk_SDK_Decode returned %d", ret );
                 }
 
                 frames++;
@@ -409,7 +410,7 @@ int silk_decoder_main( int argc, char* argv[] )
             for( i = 0; i < DecControl.framesPerPacket; i++ ) {
                 ret = SKP_Silk_SDK_Decode( psDec, &DecControl, 1, payloadToDec, nBytes, outPtr, &len );
                 if( ret ) {
-                    printf( "\nSKP_Silk_Decode returned %d", ret );
+                    LOGD( "\nSKP_Silk_Decode returned %d", ret );
                 }
                 outPtr  += len;
                 tot_len += len;
@@ -441,7 +442,7 @@ int silk_decoder_main( int argc, char* argv[] )
     }
 
     if( !quiet ) {
-        printf( "\nDecoding Finished \n" );
+        LOGD( "\nDecoding Finished \n" );
     }
 
     /* Free decoder */
@@ -453,12 +454,12 @@ int silk_decoder_main( int argc, char* argv[] )
 
     filetime = totPackets * 1e-3 * packetSize_ms;
     if( !quiet ) {
-        printf("\nFile length:                 %.3f s", filetime);
-        printf("\nTime for decoding:           %.3f s (%.3f%% of realtime)", 1e-6 * tottime, 1e-4 * tottime / filetime);
-        printf("\n\n");
+        LOGD("\nFile length:                 %.3f s", filetime);
+        LOGD("\nTime for decoding:           %.3f s (%.3f%% of realtime)", 1e-6 * tottime, 1e-4 * tottime / filetime);
+        LOGD("\n\n");
     } else {
         /* print time and % of realtime */
-        printf( "%.3f %.3f %d\n", 1e-6 * tottime, 1e-4 * tottime / filetime, totPackets );
+        LOGD( "%.3f %.3f %d\n", 1e-6 * tottime, 1e-4 * tottime / filetime, totPackets );
     }
     return 0;
 }
@@ -468,21 +469,21 @@ int silk_decoder_main( int argc, char* argv[] )
 /*****************************/
 
 static void print_encoder_usage( char* argv[] ) {
-    printf( "\nusage: %s in.pcm out.bit [settings]\n", argv[ 0 ] );
-    printf( "\nin.pcm               : Speech input to encoder" );
-    printf( "\nout.bit              : Bitstream output from encoder" );
-    printf( "\n   settings:" );
-    printf( "\n-Fs_API <Hz>         : API sampling rate in Hz, default: 24000" );
-    printf( "\n-Fs_maxInternal <Hz> : Maximum internal sampling rate in Hz, default: 24000" );
-    printf( "\n-packetlength <ms>   : Packet interval in ms, default: 20" );
-    printf( "\n-rate <bps>          : Target bitrate; default: 25000" );
-    printf( "\n-loss <perc>         : Uplink loss estimate, in percent (0-100); default: 0" );
-    printf( "\n-inbandFEC <flag>    : Enable inband FEC usage (0/1); default: 0" );
-    printf( "\n-complexity <comp>   : Set complexity, 0: low, 1: medium, 2: high; default: 2" );
-    printf( "\n-DTX <flag>          : Enable DTX (0/1); default: 0" );
-    printf( "\n-quiet               : Print only some basic values" );
-    printf( "\n-stx_header               : Add ASCII STX code to header (for wechat)" );
-    printf( "\n");
+    LOGD( "\nusage: %s in.pcm out.bit [settings]\n", argv[ 0 ] );
+    LOGD( "\nin.pcm               : Speech input to encoder" );
+    LOGD( "\nout.bit              : Bitstream output from encoder" );
+    LOGD( "\n   settings:" );
+    LOGD( "\n-Fs_API <Hz>         : API sampling rate in Hz, default: 24000" );
+    LOGD( "\n-Fs_maxInternal <Hz> : Maximum internal sampling rate in Hz, default: 24000" );
+    LOGD( "\n-packetlength <ms>   : Packet interval in ms, default: 20" );
+    LOGD( "\n-rate <bps>          : Target bitrate; default: 25000" );
+    LOGD( "\n-loss <perc>         : Uplink loss estimate, in percent (0-100); default: 0" );
+    LOGD( "\n-inbandFEC <flag>    : Enable inband FEC usage (0/1); default: 0" );
+    LOGD( "\n-complexity <comp>   : Set complexity, 0: low, 1: medium, 2: high; default: 2" );
+    LOGD( "\n-DTX <flag>          : Enable DTX (0/1); default: 0" );
+    LOGD( "\n-quiet               : Print only some basic values" );
+    LOGD( "\n-stx_header               : Add ASCII STX code to header (for wechat)" );
+    LOGD( "\n");
 }
 
 int silk_encoder_main( int argc, char* argv[] )
@@ -562,7 +563,7 @@ int silk_encoder_main( int argc, char* argv[] )
             stx_header = 1;
             args++;
         } else {
-            printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
+            LOGE( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_encoder_usage( argv );
             return JNI_EINVAL;
         }
@@ -578,29 +579,29 @@ int silk_encoder_main( int argc, char* argv[] )
 
     /* Print options */
     if( !quiet ) {
-        printf("********** Silk Encoder (Fixed Point) v %s ********************\n", SKP_Silk_SDK_get_version());
-        printf("********** Compiled for %d bit cpu ******************************* \n", (int)sizeof(void*) * 8 );
-        printf( "Input:                          %s\n",     speechInFileName );
-        printf( "Output:                         %s\n",     bitOutFileName );
-        printf( "API sampling rate:              %d Hz\n",  API_fs_Hz );
-        printf( "Maximum internal sampling rate: %d Hz\n",  max_internal_fs_Hz );
-        printf( "Packet interval:                %d ms\n",  packetSize_ms );
-        printf( "Inband FEC used:                %d\n",     INBandFEC_enabled );
-        printf( "DTX used:                       %d\n",     DTX_enabled );
-        printf( "Complexity:                     %d\n",     complexity_mode );
-        printf( "Target bitrate:                 %d bps\n", targetRate_bps );
-        printf( "STX header used:                %d\n",     stx_header );
+        LOGD("********** Silk Encoder (Fixed Point) v %s ********************\n", SKP_Silk_SDK_get_version());
+        LOGD("********** Compiled for %d bit cpu ******************************* \n", (int)sizeof(void*) * 8 );
+        LOGD( "Input:                          %s\n",     speechInFileName );
+        LOGD( "Output:                         %s\n",     bitOutFileName );
+        LOGD( "API sampling rate:              %d Hz\n",  API_fs_Hz );
+        LOGD( "Maximum internal sampling rate: %d Hz\n",  max_internal_fs_Hz );
+        LOGD( "Packet interval:                %d ms\n",  packetSize_ms );
+        LOGD( "Inband FEC used:                %d\n",     INBandFEC_enabled );
+        LOGD( "DTX used:                       %d\n",     DTX_enabled );
+        LOGD( "Complexity:                     %d\n",     complexity_mode );
+        LOGD( "Target bitrate:                 %d bps\n", targetRate_bps );
+        LOGD( "STX header used:                %d\n",     stx_header );
     }
 
     /* Open files */
     speechInFile = fopen( speechInFileName, "rb" );
     if( speechInFile == NULL ) {
-        printf( "Error: could not open input file %s\n", speechInFileName );
+        LOGE( "Error: could not open input file %s\n", speechInFileName );
         return JNI_ERR;
     }
     bitOutFile = fopen( bitOutFileName, "wb" );
     if( bitOutFile == NULL ) {
-        printf( "Error: could not open output file %s\n", bitOutFileName );
+        LOGE( "Error: could not open output file %s\n", bitOutFileName );
         return JNI_ERR;
     }
 
@@ -617,7 +618,7 @@ int silk_encoder_main( int argc, char* argv[] )
     /* Create Encoder */
     ret = SKP_Silk_SDK_Get_Encoder_Size( &encSizeBytes );
     if( ret ) {
-        printf( "\nError: SKP_Silk_create_encoder returned %d\n", ret );
+        LOGE( "\nError: SKP_Silk_create_encoder returned %d\n", ret );
         return JNI_ERR;
     }
 
@@ -626,7 +627,7 @@ int silk_encoder_main( int argc, char* argv[] )
     /* Reset Encoder */
     ret = SKP_Silk_SDK_InitEncoder( psEnc, &encStatus );
     if( ret ) {
-        printf( "\nError: SKP_Silk_reset_encoder returned %d\n", ret );
+        LOGE( "\nError: SKP_Silk_reset_encoder returned %d\n", ret );
         return JNI_ERR;
     }
 
@@ -641,7 +642,7 @@ int silk_encoder_main( int argc, char* argv[] )
     encControl.bitRate               = ( targetRate_bps > 0 ? targetRate_bps : 0 );
 
     if( API_fs_Hz > MAX_API_FS_KHZ * 1000 || API_fs_Hz < 0 ) {
-        printf( "\nError: API sampling rate = %d out of range, valid range 8000 - 48000 \n \n", API_fs_Hz );
+        LOGE( "\nError: API sampling rate = %d out of range, valid range 8000 - 48000 \n \n", API_fs_Hz );
         return JNI_ERR;
     }
 
@@ -671,7 +672,7 @@ int silk_encoder_main( int argc, char* argv[] )
         /* Silk Encoder */
         ret = SKP_Silk_SDK_Encode( psEnc, &encControl, in, (SKP_int16)counter, payload, &nBytes );
         if( ret ) {
-            printf( "\nSKP_Silk_Encode returned %d", ret );
+            LOGD( "\nSKP_Silk_Encode returned %d", ret );
         }
 
         tottime += GetHighResolutionTime() - starttime;
@@ -732,16 +733,16 @@ int silk_encoder_main( int argc, char* argv[] )
     avg_rate  = 8.0 / packetSize_ms * sumBytes       / totPackets;
     act_rate  = 8.0 / packetSize_ms * sumActBytes    / totActPackets;
     if( !quiet ) {
-        printf( "\nFile length:                    %.3f s", filetime );
-        printf( "\nTime for encoding:              %.3f s (%.3f%% of realtime)", 1e-6 * tottime, 1e-4 * tottime / filetime );
-        printf( "\nAverage bitrate:                %.3f kbps", avg_rate  );
-        printf( "\nActive bitrate:                 %.3f kbps", act_rate  );
-        printf( "\n\n" );
+        LOGD( "\nFile length:                    %.3f s", filetime );
+        LOGD( "\nTime for encoding:              %.3f s (%.3f%% of realtime)", 1e-6 * tottime, 1e-4 * tottime / filetime );
+        LOGD( "\nAverage bitrate:                %.3f kbps", avg_rate  );
+        LOGD( "\nActive bitrate:                 %.3f kbps", act_rate  );
+        LOGD( "\n\n" );
     } else {
         /* print time and % of realtime */
-        printf("%.3f %.3f %d ", 1e-6 * tottime, 1e-4 * tottime / filetime, totPackets );
+        LOGD("%.3f %.3f %d ", 1e-6 * tottime, 1e-4 * tottime / filetime, totPackets );
         /* print average and active bitrates */
-        printf( "%.3f %.3f \n", avg_rate, act_rate );
+        LOGD( "%.3f %.3f \n", avg_rate, act_rate );
     }
 
     return 0;

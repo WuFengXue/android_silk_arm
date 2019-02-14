@@ -29,6 +29,7 @@ add_library(mp3lame SHARED ${LAME_SRC} ${LAME_MPGLIB_SRC})
 add_executable(lame ${LAME_FRONTEND_SRC} ${LAME_SRC} ${LAME_MPGLIB_SRC})
 
 # audio codec
+include_directories(src/main/jni)
 aux_source_directory(src/main/jni/silk SILK_CODEC_SRC)
 aux_source_directory(src/main/jni/lame LAME_CODEC_SRC)
 add_library(codec SHARED src/main/jni/AudioCodec.c ${SILK_SRC} ${SILK_CODEC_SRC}

@@ -7,6 +7,8 @@ extern "C" {
 #include "lame/LameCodec.h"
 #include "silk/SilkCodec.h"
 
+#include "AudioCodec.h"
+
 /*
  * Class:     com_reinhard_silk_AudioCodec
  * Method:    decode
@@ -25,6 +27,7 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_decode
                                "-s", "24000", "--resample", "24000", pcm, mp3};
         return lame_codec_main(argc2, (char **) argv2);
     } else {
+        LOGE("silk_decoder_main failed!");
         return JNI_ERR;
     }
 }
@@ -60,6 +63,7 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_encode2
         const char *argv2[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
         return silk_encoder_main(argc2, (char **) argv2);
     } else {
+        LOGE("lame_codec_main failed!");
         return JNI_ERR;
     }
 }

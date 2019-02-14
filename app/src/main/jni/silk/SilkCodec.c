@@ -48,6 +48,8 @@ void swap_endian(
 #include <windows.h>	/* timer */
 #else    // Linux or Mac
 #include <sys/time.h>
+#include <jni.h>
+
 #endif
 
 #ifdef _WIN32
@@ -117,7 +119,7 @@ int silk_decoder_main( int argc, char* argv[] )
 
     if( argc < 3 ) {
         print_decoder_usage( argv );
-        exit( 0 );
+        return JNI_EINVAL;
     }
 
     /* default settings */
@@ -146,7 +148,7 @@ int silk_decoder_main( int argc, char* argv[] )
         } else {
             printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_decoder_usage( argv );
-            exit( 0 );
+            return JNI_EINVAL;
         }
     }
 
@@ -162,7 +164,7 @@ int silk_decoder_main( int argc, char* argv[] )
     bitInFile = fopen( bitInFileName, "rb" );
     if( bitInFile == NULL ) {
         printf( "Error: could not open input file %s\n", bitInFileName );
-        exit( 0 );
+        return JNI_ERR;
     }
 
     /* Check Silk header */
@@ -177,14 +179,14 @@ int silk_decoder_main( int argc, char* argv[] )
         if( strcmp( header_buf, "#!SILK_V3" ) != 0 ) {
             /* Non-equal strings */
             printf( "Error: Wrong Header %s\n", header_buf );
-            exit( 0 );
+            return JNI_ERR;
         }
     }
 
     speechOutFile = fopen( speechOutFileName, "wb" );
     if( speechOutFile == NULL ) {
         printf( "Error: could not open output file %s\n", speechOutFileName );
-        exit( 0 );
+        return JNI_ERR;
     }
 
     /* Set the samplingrate that is requested for the output */
@@ -519,7 +521,7 @@ int silk_encoder_main( int argc, char* argv[] )
 
     if( argc < 3 ) {
         print_encoder_usage( argv );
-        exit( 0 );
+        return JNI_EINVAL;
     }
 
     /* get arguments */
@@ -562,7 +564,7 @@ int silk_encoder_main( int argc, char* argv[] )
         } else {
             printf( "Error: unrecognized setting: %s\n\n", argv[ args ] );
             print_encoder_usage( argv );
-            exit( 0 );
+            return JNI_EINVAL;
         }
     }
 
@@ -594,12 +596,12 @@ int silk_encoder_main( int argc, char* argv[] )
     speechInFile = fopen( speechInFileName, "rb" );
     if( speechInFile == NULL ) {
         printf( "Error: could not open input file %s\n", speechInFileName );
-        exit( 0 );
+        return JNI_ERR;
     }
     bitOutFile = fopen( bitOutFileName, "wb" );
     if( bitOutFile == NULL ) {
         printf( "Error: could not open output file %s\n", bitOutFileName );
-        exit( 0 );
+        return JNI_ERR;
     }
 
     /* Add Silk header to stream */
@@ -616,7 +618,7 @@ int silk_encoder_main( int argc, char* argv[] )
     ret = SKP_Silk_SDK_Get_Encoder_Size( &encSizeBytes );
     if( ret ) {
         printf( "\nError: SKP_Silk_create_encoder returned %d\n", ret );
-        exit( 0 );
+        return JNI_ERR;
     }
 
     psEnc = malloc( encSizeBytes );
@@ -625,7 +627,7 @@ int silk_encoder_main( int argc, char* argv[] )
     ret = SKP_Silk_SDK_InitEncoder( psEnc, &encStatus );
     if( ret ) {
         printf( "\nError: SKP_Silk_reset_encoder returned %d\n", ret );
-        exit( 0 );
+        return JNI_ERR;
     }
 
     /* Set Encoder parameters */
@@ -640,7 +642,7 @@ int silk_encoder_main( int argc, char* argv[] )
 
     if( API_fs_Hz > MAX_API_FS_KHZ * 1000 || API_fs_Hz < 0 ) {
         printf( "\nError: API sampling rate = %d out of range, valid range 8000 - 48000 \n \n", API_fs_Hz );
-        exit( 0 );
+        return JNI_ERR;
     }
 
     tottime              = 0;

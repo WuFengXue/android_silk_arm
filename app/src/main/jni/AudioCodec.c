@@ -19,8 +19,8 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_decode
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
     const char *mp3 = (*env)->GetStringUTFChars(env, mp3Path, JNI_FALSE);
-    int argc = 4;
-    const char *argv[] = {"./Decoder", amr, pcm, "-stx_header"};
+    int argc = 5;
+    const char *argv[] = {"./Decoder", amr, pcm, "-stx_header", "-quiet"};
     if (silk_decoder_main(argc, (char **) argv) == JNI_OK) {
         int argc2 = 14;
         const char *argv2[] = {"./lame", "-q", "5", "-b", "128", "-m", "m", "-r",
@@ -41,8 +41,8 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_encode
         (JNIEnv *env, jclass clazz, jstring pcmPath, jstring amrPath) {
     const char *pcm = (*env)->GetStringUTFChars(env, pcmPath, JNI_FALSE);
     const char *amr = (*env)->GetStringUTFChars(env, amrPath, JNI_FALSE);
-    int argc = 6;
-    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
+    int argc = 7;
+    const char *argv[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header", "-quiet"};
     return silk_encoder_main(argc, (char **) argv);
 }
 
@@ -59,8 +59,8 @@ JNIEXPORT jint JNICALL Java_com_reinhard_silk_AudioCodec_encode2
     int argc = 5;
     const char *argv[] = {"./lame", "--decode", "-t", mp3, pcm};
     if (lame_codec_main(argc, (char **) argv) == JNI_OK) {
-        int argc2 = 6;
-        const char *argv2[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header"};
+        int argc2 = 7;
+        const char *argv2[] = {"./Encoder", pcm, amr, "-rate", "24000", "-stx_header", "-quiet"};
         return silk_encoder_main(argc2, (char **) argv2);
     } else {
         LOGE("lame_codec_main failed!");

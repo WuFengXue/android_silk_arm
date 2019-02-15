@@ -8,7 +8,7 @@ package com.reinhard.silk;
  */
 public class AudioCodec {
     static {
-        System.loadLibrary("codec");
+        System.loadLibrary("audiocodec");
     }
 
     public static native int decode(String amrPath, String mp3Path, String pcmPath);

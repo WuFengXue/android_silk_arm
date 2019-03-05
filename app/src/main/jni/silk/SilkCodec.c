@@ -720,8 +720,11 @@ int silk_encoder_main( int argc, char* argv[] )
     /* Write dummy because it can not end with 0 bytes */
     nBytes = -1;
 
-    /* Write payload size */
-    fwrite( &nBytes, sizeof( SKP_int16 ), 1, bitOutFile );
+    // wechat not support
+    if (!stx_header) {
+        /* Write payload size */
+        fwrite( &nBytes, sizeof( SKP_int16 ), 1, bitOutFile );
+    }
 
     /* Free Encoder */
     free( psEnc );
